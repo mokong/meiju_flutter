@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:meiju_flutter/components/request_util.dart';
 import 'package:meiju_flutter/model/meiju_list_item.dart';
 import 'package:meiju_flutter/screens/home_grid_single_view.dart';
@@ -15,7 +16,7 @@ class HomeScrollView extends StatefulWidget {
 }
 
 class _HomeScrollViewState extends State<HomeScrollView> {
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final MeiJuClient client = MeiJuClient();
   int pageNum = 1;
@@ -27,7 +28,13 @@ class _HomeScrollViewState extends State<HomeScrollView> {
     super.initState();
   }
 
-  void fetchListItem() async {
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  Future<bool> fetchListItem() async {
     final listItem = await client.fetchMeijuList(pageNum);
     List<SingleMeiJuListItem> list = _item.list;
     if (pageNum > 1) {
@@ -40,6 +47,7 @@ class _HomeScrollViewState extends State<HomeScrollView> {
     setState(() {
       _item = listItem;
     });
+    return true;
   }
 
   void tappedItem(SingleMeiJuListItem item) {
@@ -53,13 +61,13 @@ class _HomeScrollViewState extends State<HomeScrollView> {
 
   void _onRefresh() async {
     pageNum = 1;
-    fetchListItem();
+    await fetchListItem();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     pageNum += 1;
-    fetchListItem();
+    await fetchListItem();
     if (mounted) {
       setState(() {});
       _refreshController.loadComplete();
@@ -71,22 +79,24 @@ class _HomeScrollViewState extends State<HomeScrollView> {
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
-      header: WaterDropHeader(),
+      header: const ClassicHeader(
+        completeDuration: Duration(microseconds: 2000),
+      ),
       footer: CustomFooter(
         builder: (context, mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
-            body = Text("pull up load");
+            body = const Text("pull up load");
           } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
+            body = const CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed! Click retry!");
+            body = const Text("Load Failed! Click retry!");
           } else if (mode == LoadStatus.canLoading) {
-            body = Text("release to load more");
+            body = const Text("release to load more");
           } else {
-            body = Text("No more Data");
+            body = const Text("No more Data");
           }
-          return Container(
+          return SizedBox(
             height: 55.0,
             child: Center(
               child: body,
