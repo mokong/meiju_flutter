@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meiju_flutter/components/request_util.dart';
-import 'package:meiju_flutter/model/home_grid_item.dart';
-import 'package:meiju_flutter/model/meiju_list_item.dart';
-import 'package:meiju_flutter/screens/home_grid_view.dart';
-import 'package:meiju_flutter/screens/home_swiper.dart';
-import 'package:meiju_flutter/screens/meiju_detail_view.dart';
+import 'package:meiju_flutter/screens/home_scrollview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +40,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
 
@@ -56,37 +50,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final MeiJuClient client = MeiJuClient();
-
-  MeiJuListItem _item = MeiJuListItem(list: [], lunbo: []);
-
-  @override
-  void initState() {
-    fetchListItem();
-    super.initState();
-  }
-
-  void fetchListItem() async {
-    final listItem = await client.fetchMeijuList(1);
-    setState(() {
-      _item = listItem;
-    });
-  }
-
   double gridHeight() {
     double height = MediaQuery.of(context).size.height;
     var padding = MediaQuery.of(context).padding;
     double newheight = height - padding.top - padding.bottom - 240.0;
     return newheight;
-  }
-
-  void tappedItem(SingleMeiJuListItem item) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MeiJuDetailView(listItem: item),
-      ),
-    );
   }
 
   @override
@@ -95,30 +63,32 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              color: const Color(0xF1F1F1),
-              height: 150.0,
-              child: HomeSwiper(
-                dataList: _item.lunbo,
-                tapped: (item) {
-                  tappedItem(item);
-                },
-              ),
-            ),
-            Expanded(
-              // height: gridHeight(),
-              child: HomeGridView(
-                dataList: _item.list,
-                tapped: (item) {
-                  tappedItem(item);
-                },
-              ),
-            ),
-          ],
-        ),
+      body: const SafeArea(
+        child: HomeScrollView(),
+
+        // Column(
+        //   children: [
+        //     Container(
+        //       color: const Color(0xF1F1F1),
+        //       height: 150.0,
+        //       child: HomeSwiper(
+        //         dataList: _item.lunbo,
+        //         tapped: (item) {
+        //           tappedItem(item);
+        //         },
+        //       ),
+        //     ),
+        //     Expanded(
+        //       // height: gridHeight(),
+        //       child: HomeGridView(
+        //         dataList: _item.list,
+        //         tapped: (item) {
+        //           tappedItem(item);
+        //         },
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
