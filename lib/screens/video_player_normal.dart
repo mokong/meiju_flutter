@@ -3,7 +3,14 @@ import 'package:video_player/video_player.dart';
 
 /// Stateful widget to fetch and then display video content.
 class VideoApp extends StatefulWidget {
-  const VideoApp({super.key});
+  const VideoApp({
+    super.key,
+    required this.title,
+    required this.playUrl,
+  });
+
+  final String title;
+  final String playUrl;
 
   @override
   _VideoAppState createState() => _VideoAppState();
@@ -15,12 +22,14 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'http://jiexi.268289.com/cdn/meiju/vid/aHR0cHM6Ly93d3cubGlidmlvLmZ1bi9wbGF5LzcxNDg4OTcyMy0xLTEyLmh0bWw=')
+    _controller = VideoPlayerController.network(widget.playUrl)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
-      });
+      })
+      ..addListener(() {})
+      ..setVolume(1.0)
+      ..play();
   }
 
   @override
@@ -32,7 +41,7 @@ class _VideoAppState extends State<VideoApp> {
           child: Column(
             children: <Widget>[
               Container(padding: const EdgeInsets.only(top: 20.0)),
-              const Text('With remote mp4'),
+              Text(widget.title),
               Container(
                 padding: const EdgeInsets.all(20),
                 child: AspectRatio(
@@ -43,7 +52,14 @@ class _VideoAppState extends State<VideoApp> {
                       VideoPlayer(_controller),
                       ClosedCaption(text: _controller.value.caption.text),
                       _ControlsOverlay(controller: _controller),
-                      VideoProgressIndicator(_controller, allowScrubbing: true),
+                      VideoProgressIndicator(
+                        _controller,
+                        allowScrubbing: true,
+                        colors: const VideoProgressColors(
+                            backgroundColor: Colors.black45,
+                            playedColor: Colors.blue,
+                            bufferedColor: Colors.grey),
+                      ),
                     ],
                   ),
                 ),

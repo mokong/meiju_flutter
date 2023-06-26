@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meiju_flutter/components/request_util.dart';
 import 'package:meiju_flutter/model/home_grid_item.dart';
 import 'package:meiju_flutter/model/meiju_list_item.dart';
+import 'package:meiju_flutter/screens/meiju_video_player.dart';
 import 'package:meiju_flutter/screens/video_player_normal.dart';
 
 class MeiJuDetailView extends StatefulWidget {
@@ -84,7 +85,11 @@ class _MeiJuDetailViewState extends State<MeiJuDetailView> {
                           builder: (context) {
                             // return VideoPlayer(
                             //     title: _item.title, playUrl: singleItem.bofang);
-                            return VideoApp();
+                            // return VideoApp();
+                            return MeiJuVideoPalyer(
+                              title: _item.title,
+                              playUrl: singleItem.bofang,
+                            );
                           },
                         ),
                       );
