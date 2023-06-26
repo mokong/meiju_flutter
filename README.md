@@ -1,16 +1,15 @@
 # meiju_flutter
 
-A new Flutter project.
+海外剧集
 
-## Getting Started
+##  项目介绍
 
-This project is a starting point for a Flutter application.
+这是一个 Flutter 版本的海外剧，界面效果如下，支持在线播放。
 
-A few resources to get you started if this is your first Flutter project:
+<p align="left">
+  <img src="https://raw.githubusercontent.com/mokong/BlogImages/main/img/IMG_3779.PNG" width="25%">
+  <img src="https://raw.githubusercontent.com/mokong/BlogImages/main/img/IMG_3780.PNG" width="25%">
+  <img src="https://raw.githubusercontent.com/mokong/BlogImages/main/img/IMG_3781.PNG" width="25%">
+</p>
+  <img src="https://raw.githubusercontent.com/mokong/BlogImages/main/img/IMG_3782.PNG" width="75%">
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
