@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'home_grid_item.g.dart';
+
+@JsonSerializable()
 class HomeGridItem {
   final String iid;
   final String title;
@@ -13,24 +18,11 @@ class HomeGridItem {
   HomeGridItem(this.iid, this.title, this.img, this.playtime, this.otitle,
       this.jianjie, this.daoyan, this.zhuyan, this.pingfen, this.list);
 
-  factory HomeGridItem.fromJson(Map<String, dynamic> jsonResponse) {
-    return HomeGridItem(
-      jsonResponse['iid'],
-      jsonResponse['title'],
-      jsonResponse['img'],
-      jsonResponse['playtime'],
-      jsonResponse['otitle'],
-      jsonResponse['jianjie'],
-      jsonResponse['daoyan'],
-      jsonResponse['zhuyan'],
-      jsonResponse['pingfen'],
-      (jsonResponse['list'] as List)
-          .map((e) => HomeGridSingleItem.fromJson(e))
-          .toList(),
-    );
-  }
+  factory HomeGridItem.fromJson(Map<String, dynamic> json) =>
+      _$HomeGridItemFromJson(json);
 }
 
+@JsonSerializable()
 class HomeGridSingleItem {
   final String zhuti;
   final String bofang;
@@ -38,11 +30,6 @@ class HomeGridSingleItem {
 
   HomeGridSingleItem(this.zhuti, this.bofang, this.down);
 
-  factory HomeGridSingleItem.fromJson(Map<String, dynamic> jsonResponse) {
-    return HomeGridSingleItem(
-      jsonResponse['zhuti'],
-      jsonResponse['bofang'],
-      jsonResponse['down'],
-    );
-  }
+  factory HomeGridSingleItem.fromJson(Map<String, dynamic> jsonResponse) =>
+      _$HomeGridSingleItemFromJson(jsonResponse);
 }
